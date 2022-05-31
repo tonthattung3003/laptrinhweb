@@ -1,0 +1,213 @@
+﻿@page "/"
+@using PizzaPlace.Shared
+@inject IMenuService MenuService
+@inject IOderService orderService
+
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<!--Menu-->
+
+<PizzaList Title="Our Selection of Pizzas"
+Items="@State.menu.Pizzas"
+ButtonTitle="Order"
+ButtonClass="btn btn-success pl-4 pr-4"
+Selected="@AddToBasket"/>
+
+@foreach(var pizza in State.menu.Pizzas){
+    <div class="row">
+    <div class="col">
+        @pizza.Name
+    </div>
+    <div class="col text-right">
+        @($"{pizza.Price:0.00}")
+     </div>
+     <div class="col"> </div>
+     <div class="col">
+         <img src="$SpicinessImage(pizza.Spininess)"
+         alt="@pizza.Spiciness"/>
+     </div>
+     <div class="col">
+         <button class="btn btn-sucess pl-4 pr-4"
+         @onclick="@(() => AddToBasket(pizza))">
+         Add
+         </button>
+         </div>
+         </div>
+}
+@code
+{
+    private State State {get;}=new State();
+    protected override void OnInitialized()
+    {
+        State.menu.Add(
+            new Pizza(1, "Pepperoni", 8.99M, Spiciness.Spicy));
+        State.menu.Add(
+            new Pizza(2, "Margarita", 7.99M, Spiciness.None));
+        State.menu.Add(
+            new Pizza(3, "Diabolo", 9.99M, Spiciness.Hot));
+
+    }
+    private string SpicinessImage(Spiciness spiciness)
+    => $"images/{spiciness.ToString().ToLower()}.png";
+
+    private void AddToBasket(Pizza pizza)
+    => State.Basket.Add(pizza.Id);
+
+    private void RemoveFromBasket(int pos)
+    => State.Basket.RemoveAt(pos);
+
+    //private void PlaceOrder()
+    //{
+    //    Console.WriteLine("Placing order");
+    //}
+
+    protected override async Task OnInitializedAsync()
+    {
+        Menu menu = await MenuService.GetMenu();
+        foreach (Pizza pizza in menu.Pizzas)
+        {
+            State.menu.Add(pizza);
+        }
+    }
+    private async Task PlaceOrder()
+    {
+        await orderService.PlaceOrder(State.Basket);
+    }
+}
+
+<!-- Shopping Basket -->
+
+<ShoppingBasket Orders="@State.Basket.Orders"
+GetPizzaFormId="@State.menu.GetPizza"
+Selected="@RemoveFromBasket"/>
+
+@if (State.Basket.Orders.Any())
+{
+    <h1 class = "">
+        Your current order
+    </h1>
+    @foreach (var (pizza, pos) in State.Basket.Orders.Select(
+        (id,pos)=> (State.menu.GetPizza(id),pos)))
+    {
+        <div class = "row mb-2">
+            <div class = "col">
+                @pizza.Name
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button class = "btn btn-danger"
+                @onclick="@(()=> RemoveFromBasket(pos))">
+                Remove
+            </button>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"><hr /></div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+    <div class="row">
+        <div class="col"> Total:</div>
+        <div class="col text-right font-weight-bold">
+            @($"{State.TotalPrice:0.00}")
+        </div>
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col"></div>
+    </div>
+}
+<!-- Customer entry-->
+<CustomerEntry Title="Please enter your details below"
+Customer="@State.Basket.customer"
+ButtonTitle="Checkout"
+ButtonClass="mx-auto w-25 btn btn-success"
+ValidSubmit="PlaceOrder"/>>
+<h1>
+    Please enter your details below
+</h1>
+
+<fieldset>
+    <div class="row mb-2">
+        <label class="col-2" for="name">Name:</label>
+        <input class="col-6" id="name"
+        @bind="State.Basket.customer.Name"/>
+    </div>
+    <div class="row mb-2">
+        <label class="col-2" for="street">Street:</label>
+        <input class="col-6" id="street"
+        @bind="State.Basket.customer.Street" />
+    </div>
+    <div class="row mb-2">
+        <label class="col-2" for="city">City:</label>
+        <input class="col-6" id="city"
+        @bind="State.Basket.customer.City" />
+    </div>
+    <button @onclick="PlaceOrder">
+        Checkout
+    </button>
+</fieldset>
+<!-- End Customer entry-->
+@State.ToJson()
+
+
+<!-- New Customer entry-->
+<h1 class="mt-2 mb-2">
+    Please enter your details below
+</h1>
+<EditForm Model="@State.Basket.customer"
+OnInvalidSubmit="PlaceOrder">
+<DataAnnotationsValidator/>
+<fieldset>
+    <div class ="row mb-2">
+        <label class="col-2" for="name">Name:</label>
+        <InputText class="form-control col-6"
+        @bind-Value="@State.Basket.customer.Name"/>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6 offset-2">
+            <ValidationMessage
+            For="@(()=> State.Basket.customer.Name)"/>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <label class="col-2" for="street">Street:</label>
+        <InputText class="form-control col-6"
+        @bind-Value="@State.Basket.customer.Street"/>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6 offset-2">
+            <ValidationMessage 
+            For="@(()=> State.Basket.customer.Street)"/>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <label class="col-2" for="city">City:</label>
+         <InputText class="form-control col-6"
+         @bind-Value="@State.Basket.customer.City"/>
+    </div>
+    <div class="row mb-2">
+        <div class="col-6 offset-2">
+            <ValidationMessage 
+            For="@(()=> State.Basket.customer.City)"/>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <button class="mx-auto w-25 btn btn-success"
+        @onclick="PlaceOrder">Checkout:</button>
+    </div>
+</fieldset>
+</EditForm>
+<!-- End New Customer entry-->

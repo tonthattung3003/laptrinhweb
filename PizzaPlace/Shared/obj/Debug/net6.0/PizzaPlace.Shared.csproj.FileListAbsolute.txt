@@ -1,0 +1,12 @@
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.csproj.AssemblyReference.cache
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.AssemblyInfoInputs.cache
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.AssemblyInfo.cs
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.csproj.CoreCompileInputs.cache
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\bin\Debug\net6.0\PizzaPlace.Shared.deps.json
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\bin\Debug\net6.0\PizzaPlace.Shared.dll
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\bin\Debug\net6.0\PizzaPlace.Shared.pdb
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.dll
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\refint\PizzaPlace.Shared.dll
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\PizzaPlace.Shared.pdb
+C:\Users\DELL\source\repos\PizzaPlace\PizzaPlace\Shared\obj\Debug\net6.0\ref\PizzaPlace.Shared.dll
